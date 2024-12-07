@@ -33,7 +33,7 @@ jobs:
       - name: Build and push Docker image to GitHub Packages
         uses: docker/build-push-action@v3
         with:
-          context: .  # El contexto de la imagen es el directorio actual
+          context: ./app  # El contexto de la imagen es el directorio actual
           push: true  # Indica que la imagen debe subirse a GitHub Packages
           tags: ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:latest  # Etiqueta de la imagen
 
