@@ -2,8 +2,8 @@ name: Build, Push Docker Image, and Create Release
 
 on:
   push:
-    branches:
-      - main  # Puedes cambiar a la rama que desees
+    tags:
+      - 'v*'  # Se activará cuando se empuje un tag que empiece con 'v'
 
 jobs:
   build:
@@ -29,16 +29,16 @@ jobs:
         context: ./app
         push: true
         file: ./app/Dockerfile  # Cambia si tu Dockerfile está en otro lugar
-        tags: ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:latest
+        tags: ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:${{ github.ref_name }}
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ./app/Dockerfile
+          ./app/Dockerfile  # Puedes añadir otros archivos si los necesitas
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Verify Docker image from GitHub Packages
       run: |
-        docker pull ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:latest
+        docker pull ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:${{ github.ref_name }}
