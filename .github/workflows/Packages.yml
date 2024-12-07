@@ -1,0 +1,43 @@
+name: Build and Push Docker Image to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main  # La rama de desarrollo donde se activará el flujo
+  pull_request:
+    branches:
+      - main  # También en los pull requests hacia la rama 'desarrollo'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar el repositorio
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      # Paso 2: Configurar Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Paso 3: Iniciar sesión en GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}  # Usa el usuario de GitHub para autenticar
+          password: ${{ secrets.GITHUB_TOKEN }}  # Token de GitHub (auto-generado)
+
+      # Paso 4: Construir y empujar la imagen Docker al GitHub Packages (GHCR)
+      - name: Build and push Docker image to GitHub Packages
+        uses: docker/build-push-action@v3
+        with:
+          context: .  # El contexto de la imagen es el directorio actual
+          push: true  # Indica que la imagen debe subirse a GitHub Packages
+          tags: ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:latest  # Etiqueta de la imagen
+
+      # Paso 5: Verificar la imagen en GitHub Packages
+      - name: Verify Docker image from GitHub Packages
+        run: |
+          docker pull ghcr.io/upt-faing-epis/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login_api:latest  # Verificar que la imagen se ha subido correctamente
