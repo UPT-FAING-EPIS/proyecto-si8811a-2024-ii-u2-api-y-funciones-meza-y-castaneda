@@ -1,13 +1,14 @@
 import pytest
 import sys
 import os
+from unittest.mock import Mock
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 import jwt
 from utils.jwt_utils import create_jwt
 
 # Mocks
 mock_config = Mock()
-mock_config.JWT_SECRET_KEY = 'test_secret_key'
+mock_config.JWT_SECRET_KEY = 'a9f52e4c6b8f3a90e8b21d63f0c26d79'
 
 def test_create_jwt():
     email = "test@example.com"
