@@ -29,7 +29,7 @@ def test_create_jwt():
         'sub': email,
         'name': name,
         'roles': roles,
-        'exp': 0
+        'exp': 0  # Set to epoch time (0) to simulate an expired token
     }, mock_config.JWT_SECRET_KEY, algorithm="HS256")
     
     with pytest.raises(jwt.ExpiredSignatureError):

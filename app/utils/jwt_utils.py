@@ -14,10 +14,6 @@ def create_jwt(email, name, roles):
         'roles': roles,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
     }
-
-    # Convertir JWT_SECRET_KEY a string si no lo es ya
-    secret_key = str(Config.JWT_SECRET_KEY)
-    
-    # Codificar el JWT
-    token = jwt.encode(payload, secret_key, algorithm="HS256")
+    token = jwt.encode(payload, Config.JWT_SECRET_KEY, algorithm="HS256")
     return token
+    
