@@ -25,7 +25,7 @@ jobs:
 
     - name: Run tests and SonarQube analysis
       run: |
-        pytest
+        PYTHONPATH=$(pwd)/app pytest --tb=short
         sonar-scanner -Dsonar.projectKey=proyecto-si8811a -Dsonar.organization=upt-faing-epis -Dsonar.token=${{ secrets.sonar }}
 
     - name: Security scans
