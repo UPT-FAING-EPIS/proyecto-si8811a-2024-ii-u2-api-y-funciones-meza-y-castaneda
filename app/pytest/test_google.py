@@ -57,3 +57,12 @@ def test_google_authorized(mock_app):
         
         # Validar que se maneja adecuadamente la falta de roles
         assert "Roles: user" in result.data.decode()
+
+        # Caso donde la respuesta es incorrecta (usuario no autorizado)
+        mock_app_instance.acquire_token_by_authorization_code.return_value = None
+        
+        # Ejecutar la función de autorización de Google con respuesta None
+        result = google_authorized()
+        
+        # Validar manejo de error
+        assert "Error en la autorización" in result.data.decode()
