@@ -20,6 +20,9 @@ jobs:
         pip install --upgrade pip
         pip install -r app/requirements.txt
 
+    - name: Install pytest
+      run: pip install pytest
+
     - name: Run tests and SonarQube analysis
       run: |
         pytest
