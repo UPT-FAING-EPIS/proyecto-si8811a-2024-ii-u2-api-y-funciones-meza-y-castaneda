@@ -1,9 +1,9 @@
 import pytest
 import sys
+from utils.device_utils import is_mobile
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
-from app.utils.device_utils import is_mobile
 
 def test_is_mobile():
     assert is_mobile("Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X)")
