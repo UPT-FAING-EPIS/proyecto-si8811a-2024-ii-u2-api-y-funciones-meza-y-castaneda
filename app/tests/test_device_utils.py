@@ -1,4 +1,4 @@
-import pytest
+import tests
 import sys
 from utils.device_utils import is_mobile
 import os
