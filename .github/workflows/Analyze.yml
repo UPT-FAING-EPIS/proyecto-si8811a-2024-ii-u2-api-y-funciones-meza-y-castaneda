@@ -23,7 +23,7 @@ jobs:
     - name: Install pytest
       run: pip install pytest
 
-    - name: Run tests and SonarQube analysis
+    - name: Run tests with detailed error output
       run: |
         PYTHONPATH=$(pwd)/app pytest --tb=short
         sonar-scanner -Dsonar.projectKey=proyecto-si8811a -Dsonar.organization=upt-faing-epis -Dsonar.token=${{ secrets.sonar }}
