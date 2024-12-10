@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -16,13 +17,13 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --upgrade pip
+        pip install -r app/requirements.txt
 
     - name: Run tests and SonarQube analysis
       run: |
         pytest
-        sonar-scanner -Dsonar.projectKey=proyecto-si8811a -Dsonar.organization=YOUR_ORG_ID -Dsonar.token=${{ secrets.sonar }}
+        sonar-scanner -Dsonar.projectKey=proyecto-si8811a -Dsonar.organization=upt-faing-epis -Dsonar.token=${{ secrets.sonar }}
 
     - name: Security scans
       run: |
