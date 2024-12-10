@@ -14,3 +14,4 @@ class Config:
     GOOGLE_DISCOVERY_URL = os.getenv("GOOGLE_DISCOVERY_URL")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
     SCOPE = ["User.Read"]
+
