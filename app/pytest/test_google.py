@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 from unittest.mock import patch, Mock
 from auth.google import google_login, google_authorized
-
+    
 # Mocks
 mock_config = Mock()
 mock_config.CLIENT_ID = 'test_client_id'
