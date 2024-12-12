@@ -12,7 +12,7 @@ from auth.microsoft import microsoft_login
 from config import Config
 
 @patch.object(Config, 'JWT_SECRET_KEY', 'a9f52e4c6b8f3a90e8b21d63f0c26d79')
-def test_create_jwt(mock_secret_key):
+def test_create_jwt():
     email = "test@example.com"
     name = "Test User"
     roles = ["user"]
@@ -20,7 +20,7 @@ def test_create_jwt(mock_secret_key):
     token = create_jwt(email, name, roles)
 
     # Decode the token
-    decoded_token = jwt.decode(token, mock_secret_key, algorithms=["HS256"])
+    decoded_token = jwt.decode(token, Config.JWT_SECRET_KEY, algorithms=["HS256"])
     assert decoded_token['sub'] == email
     assert decoded_token['name'] == name
     assert decoded_token['roles'] == roles
@@ -32,10 +32,10 @@ def test_create_jwt(mock_secret_key):
         'name': name,
         'roles': roles,
         'exp': 0  # Set to epoch time (0) to simulate an expired token
-    }, mock_secret_key, algorithm="HS256")
+    }, Config.JWT_SECRET_KEY, algorithm="HS256")
 
     with tests.raises(jwt.ExpiredSignatureError):
-        jwt.decode(expired_token, mock_secret_key, algorithms=["HS256"])
+        jwt.decode(expired_token, Config.JWT_SECRET_KEY, algorithms=["HS256"])
 
 # Tests for Google authentication
 @patch('auth.google.ConfidentialClientApplication')
