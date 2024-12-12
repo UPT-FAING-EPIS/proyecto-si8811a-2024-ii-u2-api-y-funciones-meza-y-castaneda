@@ -1,9 +1,7 @@
 import tests
 import sys
 import os
-from unittest.mock import patch, Mock
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
+from unittest.mock import patch
 import jwt
 from utils.jwt_utils import create_jwt
 
@@ -11,20 +9,18 @@ from utils.jwt_utils import create_jwt
 from app import app
 from auth.google import google_login
 from auth.microsoft import microsoft_login
+from config import Config
 
-# Mocks
-mock_config = Mock()
-mock_config.JWT_SECRET_KEY = 'a9f52e4c6b8f3a90e8b21d63f0c26d79'
-
-def test_create_jwt():
+@patch.object(Config, 'JWT_SECRET_KEY', 'a9f52e4c6b8f3a90e8b21d63f0c26d79')
+def test_create_jwt(mock_secret_key):
     email = "test@example.com"
     name = "Test User"
     roles = ["user"]
 
     token = create_jwt(email, name, roles)
-    
+
     # Decode the token
-    decoded_token = jwt.decode(token, mock_config.JWT_SECRET_KEY, algorithms=["HS256"])
+    decoded_token = jwt.decode(token, mock_secret_key, algorithms=["HS256"])
     assert decoded_token['sub'] == email
     assert decoded_token['name'] == name
     assert decoded_token['roles'] == roles
@@ -36,10 +32,10 @@ def test_create_jwt():
         'name': name,
         'roles': roles,
         'exp': 0  # Set to epoch time (0) to simulate an expired token
-    }, mock_config.JWT_SECRET_KEY, algorithm="HS256")
-    
+    }, mock_secret_key, algorithm="HS256")
+
     with tests.raises(jwt.ExpiredSignatureError):
-        jwt.decode(expired_token, mock_config.JWT_SECRET_KEY, algorithms=["HS256"])
+        jwt.decode(expired_token, mock_secret_key, algorithms=["HS256"])
 
 # Tests for Google authentication
 @patch('auth.google.ConfidentialClientApplication')
@@ -47,10 +43,10 @@ def test_google_login_basic(mock_app):
     with app.app_context():
         # Setup mock for ConfidentialClientApplication to return a test authorization URL
         mock_app.return_value.get_authorization_request_url.return_value = "https://test_auth_url.com"
-        
+
         # Ejecuta la función de login de Google
         result = google_login()
-        
+
         # Asegúrate de que la URL de autorización sea la esperada
         assert "https://test_auth_url.com" in result.location
 
@@ -60,9 +56,9 @@ def test_microsoft_login_basic(mock_app):
     with app.app_context():
         # Setup mock for ConfidentialClientApplication to return a test authorization URL
         mock_app.return_value.get_authorization_request_url.return_value = "https://test_auth_url.com"
-        
+
         # Ejecuta la función de login de Microsoft
         result = microsoft_login()
-        
+
         # Asegúrate de que la URL de autorización sea la esperada
         assert "https://test_auth_url.com" in result.location
