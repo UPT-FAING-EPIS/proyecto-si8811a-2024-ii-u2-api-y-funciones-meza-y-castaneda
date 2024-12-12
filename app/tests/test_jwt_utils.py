@@ -1,7 +1,5 @@
 import pytest
-import sys
-import os
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import jwt
 from utils.jwt_utils import create_jwt
 
@@ -40,10 +38,12 @@ def test_create_jwt():
 # Tests for Google authentication
 @patch('auth.google.ConfidentialClientApplication')
 def test_google_login_basic(mock_app):
-    with app.app_context():
-        # Setup mock for ConfidentialClientApplication to return a test authorization URL
-        mock_app.return_value.get_authorization_request_url.return_value = "https://test_auth_url.com"
+    # Setup mock for ConfidentialClientApplication
+    mock_instance = MagicMock()
+    mock_instance.get_authorization_request_url.return_value = "https://test_auth_url.com"
+    mock_app.return_value = mock_instance
 
+    with app.app_context():
         # Ejecuta la función de login de Google
         result = google_login()
 
@@ -53,10 +53,12 @@ def test_google_login_basic(mock_app):
 # Tests for Microsoft authentication
 @patch('auth.microsoft.ConfidentialClientApplication')
 def test_microsoft_login_basic(mock_app):
-    with app.app_context():
-        # Setup mock for ConfidentialClientApplication to return a test authorization URL
-        mock_app.return_value.get_authorization_request_url.return_value = "https://test_auth_url.com"
+    # Setup mock for ConfidentialClientApplication
+    mock_instance = MagicMock()
+    mock_instance.get_authorization_request_url.return_value = "https://test_auth_url.com"
+    mock_app.return_value = mock_instance
 
+    with app.app_context():
         # Ejecuta la función de login de Microsoft
         result = microsoft_login()
 
