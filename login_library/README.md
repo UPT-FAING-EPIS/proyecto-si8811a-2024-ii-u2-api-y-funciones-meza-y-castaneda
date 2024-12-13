@@ -24,16 +24,11 @@
 
 ### Instalación de la librería
 
-#### Desde PyPI
-Si tu librería está publicada en PyPI, instálala usando:
+1. Instalar desde el archivo de distribución local (dist/)
 
 ```bash
-pip install login-library
-```
-
-Si estás trabajando localmente, puedes instalarla desde la carpeta del proyecto:
-```bash
-pip install .
+pip install dist/login_library-0.1.0-py3-none-any.whl
+pip install dist/login-library-0.1.0.tar.gz
 ```
 
 ## Uso
