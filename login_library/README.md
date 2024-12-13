@@ -13,6 +13,16 @@
 
 ---
 
+## Facilidades
+
+### **Facilidades para Microsoft**
+La librería simplifica la autenticación con Microsoft utilizando MSAL, generando automáticamente la URL de inicio de sesión y gestionando el intercambio de códigos por tokens de acceso. Esto permite acceder fácilmente a recursos como Microsoft Graph API, ideal para aplicaciones que necesitan autenticar usuarios o interactuar con servicios de Microsoft 365 de forma segura y eficiente.
+
+### **Facilidades para Google**
+La librería abstrae el flujo OAuth2 de Google, generando la URL de inicio de sesión y gestionando la obtención de tokens de acceso y `id_token`. Es perfecta para integrar el inicio de sesión con Google y acceder a APIs como Google Drive o Gmail, proporcionando una experiencia de autenticación sencilla y segura.
+
+---
+
 ## Instalación
 
 ### Requisitos previos
