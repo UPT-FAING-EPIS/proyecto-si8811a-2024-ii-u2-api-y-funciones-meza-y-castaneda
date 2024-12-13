@@ -65,3 +65,78 @@ export GOOGLE_CLIENT_ID="tu-google-client-id"
 export GOOGLE_CLIENT_SECRET="tu-google-client-secret"
 export GOOGLE_DISCOVERY_URL="https://accounts.google.com/.well-known/openid-configuration"
 ```
+
+### Ejemplo de Uso
+
+#### Autenticación con Microsoft
+
+```python
+from login_library.msal_auth import MicrosoftAuth
+
+# Configurar credenciales
+ms_auth = MicrosoftAuth(
+    client_id="tu-client-id",
+    client_secret="tu-client-secret",
+    authority="https://login.microsoftonline.com/common",
+    redirect_path="/authorized",
+    scope=["User.Read"]
+)
+
+# Obtener URL de inicio de sesión
+auth_url = ms_auth.get_auth_url("http://localhost:5000/authorized")
+print(f"Inicia sesión visitando esta URL: {auth_url}")
+
+# Intercambiar el código por un token
+authorization_code = input("Ingresa el código de autorización recibido: ")
+token_response = ms_auth.acquire_token(authorization_code, "http://localhost:5000/authorized")
+
+if "access_token" in token_response:
+    print(f"Token de acceso: {token_response['access_token']}")
+else:
+    print("Error en la autenticación:", token_response)
+```
+#### Autenticación con Google
+```python
+
+from login_library.google_auth import GoogleAuth
+# Configurar credenciales
+google_auth = GoogleAuth(
+    client_id="tu-google-client-id",
+    client_secret="tu-google-client-secret",
+    discovery_url="https://accounts.google.com/.well-known/openid-configuration"
+)
+
+# Obtener URL de inicio de sesión
+auth_url = google_auth.get_auth_url("http://localhost:5000/authorized")
+print(f"Inicia sesión visitando esta URL: {auth_url}")
+
+# Intercambiar el código por un token
+authorization_code = input("Ingresa el código de autorización recibido: ")
+token_response = google_auth.acquire_token(authorization_code, "http://localhost:5000/authorized")
+
+if "id_token" in token_response:
+    print(f"Token de acceso: {token_response['id_token']}")
+else:
+    print("Error en la autenticación:", token_response)
+```
+
+### Errores Comunes y Soluciones
+
+1. **Error `invalid_grant` durante la autenticación**
+   - **Causa:** El código de autorización expiró o no coincide el `redirect_uri`.
+   - **Solución:** Verifica que el `redirect_uri` configurado en tu código coincida exactamente con el registrado en Azure o Google.
+
+2. **Error `AADSTS50011`**
+   - **Causa:** El `redirect_uri` no está configurado correctamente en Azure.
+   - **Solución:** Agrega la URI correcta en la sección de "Redirect URIs" de la configuración de tu aplicación en Azure.
+
+3. **Error `ModuleNotFoundError: No module named 'login_library'`**
+   - **Causa:** La librería no está instalada correctamente.
+   - **Solución:** Asegúrate de instalar la librería con:
+     ```bash
+     pip install -e .
+     ```
+
+4. **Error al instalar dependencias**
+   - **Causa:** Versiones incompatibles de Python o dependencias.
+   - **Solución:** Verifica que estás usando Python 3.7 o superior y que las dependencias están actualizadas.
