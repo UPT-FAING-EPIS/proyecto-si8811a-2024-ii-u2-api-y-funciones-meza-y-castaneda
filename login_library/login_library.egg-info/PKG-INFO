@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: login-library
+Version: 0.1.0
+Summary: Librería para autenticación con Microsoft y Google usando Flask.
+Home-page: https://github.com/UPT-FAING-EPIS/proyecto-si8811a-2024-ii-u2-api-y-funciones-meza-y-castaneda/login-library
+Author: Marco
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+
+UNKNOWN
+
