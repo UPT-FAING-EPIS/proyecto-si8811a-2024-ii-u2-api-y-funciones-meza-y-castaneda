@@ -21,7 +21,80 @@ La librería simplifica la autenticación con Microsoft utilizando MSAL, generan
 ### **Facilidades para Google**
 La librería abstrae el flujo OAuth2 de Google, generando la URL de inicio de sesión y gestionando la obtención de tokens de acceso y `id_token`. Es perfecta para integrar el inicio de sesión con Google y acceder a APIs como Google Drive o Gmail, proporcionando una experiencia de autenticación sencilla y segura.
 
+# Componentes de Login Library
+
+### **1. `msal_auth.py` (Microsoft Authentication)**
+- **Función principal:** Gestiona la autenticación de usuarios mediante Microsoft OAuth2 usando la biblioteca oficial MSAL.
+- **Facilidades:**
+  - Genera automáticamente la URL de inicio de sesión con los parámetros necesarios.
+  - Intercambia el código de autorización por tokens de acceso y de actualización.
+  - Soporta scopes personalizados, permitiendo definir permisos específicos.
+- **Uso típico:** Integrar el inicio de sesión con cuentas de Microsoft en aplicaciones corporativas o acceder a datos de Microsoft 365 mediante Microsoft Graph API.
+
 ---
+
+### **2. `google_auth.py` (Google Authentication)**
+- **Función principal:** Maneja el flujo de autenticación OAuth2 para Google.
+- **Facilidades:**
+  - Genera la URL de autorización para iniciar sesión con Google.
+  - Gestiona el intercambio del código de autorización por tokens (`access_token` e `id_token`).
+  - Valida automáticamente que el correo del usuario esté verificado.
+- **Uso típico:** Implementar el inicio de sesión con cuentas de Google o interactuar con APIs como Google Drive, Gmail o Google Calendar.
+
+---
+
+### **3. `jwt_utils.py` (Manejo de JSON Web Tokens)**
+- **Función principal:** Proporciona herramientas para generar y validar JWTs.
+- **Facilidades:**
+  - Generación de tokens JWT con datos específicos (como nombre, roles, email).
+  - Validación y decodificación de tokens, garantizando su autenticidad y vigencia.
+- **Uso típico:** Manejar sesiones seguras y permisos de usuario en aplicaciones sin necesidad de cookies o almacenamiento en servidores.
+
+---
+
+### **4. `utils.py` (Utilidades generales)**
+- **Función principal:** Contiene funciones auxiliares que pueden ser útiles en diferentes partes de la librería.
+- **Facilidades:**
+  - Detección de dispositivos móviles mediante el análisis del `User-Agent`.
+  - Funciones genéricas que complementan los flujos de autenticación.
+- **Uso típico:** Mejorar la personalización de la experiencia del usuario (por ejemplo, detectar si el usuario está en un dispositivo móvil).
+
+---
+
+### **5. `config.py` (Configuración global)**
+- **Función principal:** Centraliza la configuración de la librería y valores reutilizables.
+- **Facilidades:**
+  - Almacena constantes como endpoints de autorización, discovery URL para Google, o scopes predeterminados.
+  - Permite configurar fácilmente variables de entorno.
+- **Uso típico:** Simplificar la personalización de la librería sin modificar el código fuente.
+  
+### **6. Diagrama General**
+
+```mermaid
+graph TD
+    LoginLibrary[Login Library] -->|Usa| A[msal_auth.py]
+    LoginLibrary -->|Usa| B[google_auth.py]
+    LoginLibrary -->|Usa| C[jwt_utils.py]
+    LoginLibrary -->|Usa| D[utils.py]
+    LoginLibrary -->|Usa| E[config.py]
+
+    A -->|Autenticación Microsoft| A1[Generar URL de inicio de sesión]
+    A -->|Autenticación Microsoft| A2[Intercambiar código por tokens]
+
+    B -->|Autenticación Google| B1[Generar URL de inicio de sesión]
+    B -->|Autenticación Google| B2[Intercambiar código por tokens]
+    B -->|Autenticación Google| B3[Validar correo electrónico]
+
+    C -->|Manejo de JWT| C1[Generar tokens]
+    C -->|Manejo de JWT| C2[Validar tokens]
+
+    D -->|Soporte| D1[Detección de dispositivos]
+    D -->|Soporte| D2[Funciones auxiliares]
+
+    E -->|Configuración| E1[Endpoints predeterminados]
+    E -->|Configuración| E2[Scopes y variables]
+
+```
 
 ## Instalación
 
@@ -60,6 +133,7 @@ Configura las siguientes **variables de entorno** antes de usar la librería:
 
 #### Para JWT
 - `JWT_SECRET_KEY`: Clave secreta para firmar los tokens JWT.
+
 
 ### Cómo definir las variables de entorno
 
@@ -128,7 +202,9 @@ if "id_token" in token_response:
     print(f"Token de acceso: {token_response['id_token']}")
 else:
     print("Error en la autenticación:", token_response)
+
 ```
+
 
 ### Errores Comunes y Soluciones
 
